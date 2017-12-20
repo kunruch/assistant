@@ -1,6 +1,7 @@
 'use strict'
 
-import { app, BrowserWindow } from 'electron'
+import { app, BrowserWindow, ipcMain } from 'electron'
+import blc from 'broken-link-checker'
 
 /**
  * Set `__static` path to static files in production
@@ -45,6 +46,34 @@ app.on('activate', () => {
     createWindow()
   }
 })
+
+ipcMain.on('check-links', (event, data) => {
+  var options = {}
+  var customData = {}
+  var siteChecker = new blc.SiteChecker(options, {
+    junk: function (result, customData) {
+      // sendLinkResult(result, event)
+    },
+    link: function (result, customData) {
+      sendLinkResult(result, event)
+    },
+    end: function () {
+
+    }
+  })
+  siteChecker.enqueue(data.url, customData)
+})
+
+function sendLinkResult (result, event) {
+  var url = result.url.resolved === null ? result.url.original : result.url.resolved
+  var status = 'OK'
+  if (result.broken === true) {
+    status = result.brokenReason
+  } else if (result.excluded === true) {
+    status = result.excludedReason
+  }
+  event.sender.send('append-linkcheck-result', url + ' -- ' + status)
+}
 
 /**
  * Auto Updater
