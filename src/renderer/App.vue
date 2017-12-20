@@ -9,20 +9,20 @@
           </router-link>
         </div>
         <div class="menu-toggle">
-            <input type="checkbox" id="menu-toggle">
-            <label class="header-right" for="menu-toggle"><span class="css-icon-hamburger"><span>Toggle</span></span><span>Menu</span></label>
-            <div class="menu-toggle-content">
-                <nav role="navigation">
-                    <ul class="menu">
-                        <li class="menu-item"><router-link to="/sites">Sites</router-link></li>
-                        <li class="menu-item"><router-link to="/tools">Tools</router-link></li>
-                        <li class="menu-item"><router-link to="/scheduler">Scheduler</router-link></li>
-                        <li class="menu-item"><router-link to="/help">Help</router-link></li>
-                    </ul>
-                </nav>
-                <div class="header-right">
-                </div>
+          <input type="checkbox" id="menu-toggle">
+          <label class="header-right" for="menu-toggle"><span class="css-icon-hamburger"><span>Toggle</span></span><span>Menu</span></label>
+          <div class="menu-toggle-content">
+            <nav role="navigation">
+              <ul class="menu">
+                <li class="menu-item"><router-link to="/sites"><font-awesome-icon :icon="icons.faTh" /> Sites</router-link></li>
+                <li class="menu-item"><router-link to="/tools"><font-awesome-icon :icon="icons.faCogs" /> Tools</router-link></li>
+                <li class="menu-item"><router-link to="/tasks"><font-awesome-icon :icon="icons.faCalendarAlt" /> Tasks</router-link></li>
+                <li class="menu-item"><router-link to="/help"><font-awesome-icon :icon="icons.faQuestion" /> Help</router-link></li>
+              </ul>
+            </nav>
+            <div class="header-right">
             </div>
+          </div>
         </div>
       </div>
     </header>
@@ -33,8 +33,18 @@
 </template>
 
 <script>
+  import FontAwesomeIcon from '@fortawesome/vue-fontawesome'
+  import { faTh, faCogs, faCalendarAlt, faQuestion } from '@fortawesome/fontawesome-free-solid'
   export default {
-    name: 'assistant'
+    name: 'assistant',
+    computed: {
+      icons () {
+        return { faTh, faCogs, faCalendarAlt, faQuestion }
+      }
+    },
+    components: {
+      FontAwesomeIcon
+    }
   }
 </script>
 
