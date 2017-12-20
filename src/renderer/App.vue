@@ -40,7 +40,7 @@
 
 <style lang="scss">
   $color-primary: #42b983;
-  $size-site-header-height: 52px;
+  $size-site-header-height: 60px;
   $color-background-dark: #2c2c2c;
   $color-background-light: #f8f8f8;
   $color-text:  rgb(41, 41, 41);
