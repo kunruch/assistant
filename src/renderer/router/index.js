@@ -8,7 +8,12 @@ export default new Router({
     {
       path: '/',
       name: 'landing-page',
-      component: require('@/components/LandingPage').default
+      component: require('@/views/LandingPage').default
+    },
+    {
+      path: '/link-checker',
+      name: 'link-checker',
+      component: require('@/views/LinkChecker').default
     },
     {
       path: '*',
