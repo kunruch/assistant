@@ -56,6 +56,9 @@
   $color-footer-default-background: #f8f8f8;
   @import "~mmcss/src/mm";
 
+  body, html {
+    font-size: 14px;
+  }
 
   #app {
     min-height: 100vh;
