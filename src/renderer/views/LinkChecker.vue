@@ -121,4 +121,8 @@
       flex: 1;
     }
   }
+
+  #link-check-output {
+    border: 1px solid #eee;
+  }
 </style>

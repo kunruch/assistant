@@ -54,10 +54,26 @@
 </script>
 
 
-<style scoped>
+<style lang="scss" scoped>
 ul {
-  padding-left: 1.8rem;
+  padding-left: 0;
+  margin-left: 0;
   line-height: 1.25em;
+}
+
+li ul li {
+  padding-left: 2.8rem;
+}
+
+li {  
+  background: white;
+  padding: 3px 6px 3px 0;
+  margin: 0;
+  border-bottom: 1px solid #eee;
+
+  &:last-child {
+    border-bottom: 0;
+  }
 }
 
 li span {
@@ -72,6 +88,7 @@ a {
   cursor: pointer;
   width: 20px;
   float:left;
+  margin-left: 0.5rem;
 }
 
 .bold {
