@@ -80,6 +80,8 @@
     methods: {
       beginScan () {
         this.linkData = []
+        this.links = 0
+        this.broken = 0
         this.status = 'Starting Scan ...'
         this.scanning = true
         this.startTime = Date.now()

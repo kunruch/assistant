@@ -64,6 +64,7 @@
 
   #app {
     min-height: 100vh;
+    background: #fcfcfc;
   }
 
   .menu-item {
