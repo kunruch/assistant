@@ -47,7 +47,7 @@ function sendLinkResult (result, event) {
   if (result.broken === true) {
     status = blc[result.brokenReason]
   } else if (result.http.cached) {
-    return // exlude cached links
+    // instead of excluding cached links, we can exclude duplicate links in front-end
   } else if (result.excluded === true) {
     status = blc[result.excludedReason]
   }
