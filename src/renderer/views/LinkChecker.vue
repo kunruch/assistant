@@ -10,15 +10,20 @@
         <li><strong>Broekn Links:</strong> <span v-html="broken"></span></li>
         <li><strong>Time Elapsed:</strong> <span v-html="time"></span></li>
       </ul>
-      <div id="link-check-output" class="text-small section" v-html="output"></div>
+      <ul id="link-check-output" class="text-small bare">
+        <link-checker-item class="item" v-for="links in linkData" :model="links" :key="links.title" ref="links"/>
+      </ul>
     </div>
   </div>
 </template>
 
 
 <script>
+  import LinkCheckerItem from './components/LinkCheckerItem'
+
   export default {
     name: 'link-checker',
+    components: { LinkCheckerItem },
     data () {
       return {
         scanning: false,
@@ -28,27 +33,36 @@
         broken: 0,
         startTime: null,
         time: '00:00:00',
-        output: ''
+        output: '',
+        linkData: []
       }
     },
     created () {
-      this.$electron.ipcRenderer.on('append-linkcheck-page', (event, message) => {
+      this.$electron.ipcRenderer.on('append-linkcheck-page', (event, url) => {
         this.status = 'Running ...'
-        this.output += `<strong>${message}</strong><br>`
+        this.linkData.push({
+          title: url,
+          url: url
+        })
         this.links++
       })
-      this.$electron.ipcRenderer.on('append-linkcheck-page-error', (event, message, errorType) => {
+      this.$electron.ipcRenderer.on('append-linkcheck-page-error', (event, url, error, errorType) => {
         this.status = 'Running ...'
-        this.output += `<strong><span class="${errorType}">${message}</span></strong><br>`
+        this.linkData.push({
+          title: url,
+          url: url,
+          status: error,
+          displayType: errorType
+        })
         this.links++
         this.broken++
       })
-      this.$electron.ipcRenderer.on('append-linkcheck-link', (event, message) => {
-        this.output += `<span class="ok">${message}</span><br>`
+      this.$electron.ipcRenderer.on('append-linkcheck-link', (event, link) => {
+        this.addChild({ title: link, url: link, status: 'OK', displayType: 'ok' })
         this.links++
       })
-      this.$electron.ipcRenderer.on('append-linkcheck-error', (event, message) => {
-        this.output += `<span class="error">${message}</span><br>`
+      this.$electron.ipcRenderer.on('append-linkcheck-error', (event, link, status) => {
+        this.addChild({ title: link, url: link, status: status, displayType: 'error' })
         this.links++
         this.broken++
       })
@@ -57,7 +71,10 @@
       })
     },
     beforeDestroy () {
-      this.$electron.ipcRenderer.removeAllListeners('append-linkcheck-result')
+      this.$electron.ipcRenderer.removeAllListeners('append-linkcheck-page')
+      this.$electron.ipcRenderer.removeAllListeners('append-linkcheck-page-error')
+      this.$electron.ipcRenderer.removeAllListeners('append-linkcheck-link')
+      this.$electron.ipcRenderer.removeAllListeners('append-linkcheck-error')
       this.$electron.ipcRenderer.send('pause-check-links')
     },
     methods: {
@@ -69,6 +86,10 @@
           url: this.url
         })
         this.calcTimeElapsed()
+      },
+      addChild (child) {
+        // add child to the last link item
+        this.$refs.links[this.$refs.links.length - 1].addChild(child)
       },
       calcTimeElapsed () {
         var sec = (Date.now() - this.startTime) / 1000
@@ -98,17 +119,5 @@
       margin-right: 1rem;
       flex: 1;
     }
-  }
-
-  .ok {
-    color: green;
-  }
-
-  .error {
-    color: red;
-  }
-
-  .info {
-    color: orange;
   }
 </style>

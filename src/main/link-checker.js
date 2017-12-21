@@ -38,7 +38,7 @@ export default {
 }
 
 function sendPageData (data, pageUrl, event) {
-  event.sender.send('append-linkcheck-page', `+ ${pageUrl}`)
+  event.sender.send('append-linkcheck-page', pageUrl)
 }
 
 function sendLinkResult (result, event) {
@@ -53,12 +53,12 @@ function sendLinkResult (result, event) {
   }
 
   if (status === 'OK') {
-    event.sender.send('append-linkcheck-link', ` |-- ${url} - ${status}`)
+    event.sender.send('append-linkcheck-link', url, status)
   } else {
-    event.sender.send('append-linkcheck-error', ` |-- ${url} - ${status}`)
+    event.sender.send('append-linkcheck-error', url, status)
   }
 }
 
 function sendPageError (pageUrl, error, errorType, event) {
-  event.sender.send('append-linkcheck-page-error', `+ ${pageUrl} -- ${error}`, errorType)
+  event.sender.send('append-linkcheck-page-error', pageUrl, error, errorType)
 }
