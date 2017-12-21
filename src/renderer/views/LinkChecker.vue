@@ -26,6 +26,7 @@
         url: 'http://localhost:8080/',
         links: 0,
         broken: 0,
+        startTime: null,
         time: '00:00:00',
         output: ''
       }
@@ -63,9 +64,26 @@
       beginScan () {
         this.status = 'Starting Scan ...'
         this.scanning = true
+        this.startTime = Date.now()
         this.$electron.ipcRenderer.send('check-links', {
           url: this.url
         })
+        this.calcTimeElapsed()
+      },
+      calcTimeElapsed () {
+        var sec = (Date.now() - this.startTime) / 1000
+        var hours = Math.floor(sec / 3600)
+        var minutes = Math.floor((sec - (hours * 3600)) / 60)
+        var seconds = Math.round(sec - (hours * 3600) - (minutes * 60))
+
+        if (hours < 10) { hours = '0' + hours }
+        if (minutes < 10) { minutes = '0' + minutes }
+        if (seconds < 10) { seconds = '0' + seconds }
+        this.time = hours + ':' + minutes + ':' + seconds
+
+        if (this.status !== 'Finished') {
+          setTimeout(this.calcTimeElapsed, 1000)
+        }
       }
     }
   }
