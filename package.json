@@ -56,10 +56,6 @@
     }
   },
   "dependencies": {
-    "@fortawesome/fontawesome": "^1.1.0",
-    "@fortawesome/fontawesome-free-brands": "^5.0.2",
-    "@fortawesome/fontawesome-free-solid": "^5.0.2",
-    "@fortawesome/vue-fontawesome": "0.0.22",
     "axios": "^0.16.1",
     "broken-link-checker": "^0.7.6",
     "mmcss": "^0.3.3",

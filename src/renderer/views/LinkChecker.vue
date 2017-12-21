@@ -13,7 +13,7 @@
     name: 'link-checker',
     data () {
       return {
-        url: '',
+        url: 'https://kanishkkunal.in/',
         output: ''
       }
     },
