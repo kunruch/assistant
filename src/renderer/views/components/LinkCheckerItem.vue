@@ -1,8 +1,10 @@
 <template>
   <li>
-    <div class="bold">
-      <span class="toggle" v-if="isFolder" @click="toggle">[{{open ? '-' : '+'}}]</span>
-      <span :class="model.displayType"><a href="#" @click="openExternalLink(model.url)">{{model.title}}</a> {{model.status}} {{children.length}}</span>
+    <div>
+      <span class="bold toggle" v-if="isFolder" @click="toggle">[{{open ? '-' : '+'}}]</span>
+      <span class="bold" :class="model.displayType"><a href="#" @click="openExternalLink(model.url)">{{model.title}}</a> {{model.status}}</span>
+      <span v-if="children.length > 0">{{children.length}} links checked</span>
+      <span class="error" v-if="broken > 0">{{broken}} broken links</span>
     </div>
     <ul class="bare" v-show="open" v-if="isFolder">
       <link-checker-item class="item" v-for="model in model.children" :model="model" :key="model.title"></link-checker-item>
@@ -22,6 +24,7 @@
     data: function () {
       return {
         open: false,
+        broken: 0,
         children: []
       }
     },
@@ -36,6 +39,7 @@
     methods: {
       addChild (child) {
         this.children.push(child)
+        if (child.displayType === 'error') this.broken++
       },
       openExternalLink (link) {
         this.$electron.shell.openExternal(link)
@@ -52,8 +56,12 @@
 
 <style scoped>
 ul {
-  padding-left: 0.7rem;
+  padding-left: 1.8rem;
   line-height: 1.25em;
+}
+
+li span {
+  margin-right: 6px;
 }
 
 a {
@@ -62,6 +70,8 @@ a {
 
 .toggle {
   cursor: pointer;
+  width: 20px;
+  float:left;
 }
 
 .bold {
