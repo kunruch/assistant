@@ -33,7 +33,6 @@
         broken: 0,
         startTime: null,
         time: '00:00:00',
-        output: '',
         linkData: []
       }
     },
@@ -68,6 +67,7 @@
       })
       this.$electron.ipcRenderer.on('end-linkcheck', (event, message) => {
         this.status = 'Finished'
+        this.scanning = false
       })
     },
     beforeDestroy () {
@@ -79,6 +79,7 @@
     },
     methods: {
       beginScan () {
+        this.linkData = []
         this.status = 'Starting Scan ...'
         this.scanning = true
         this.startTime = Date.now()

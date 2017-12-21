@@ -87,4 +87,13 @@
     padding: 6px;
     display: block;
   }
+
+  button:disabled,
+  button:disabled:hover
+  button[disabled],
+  button[disabled]:hover{
+    border: 1px solid #999999;
+    background-color: #cccccc;
+    color: #666666;
+  }
 </style>
