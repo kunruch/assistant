@@ -7,7 +7,7 @@
       <ul class="status bare">
         <li><strong>Status:</strong> <span v-html="status"></span></li>
         <li><strong>Links Checked:</strong> <span v-html="links"></span></li>
-        <li><strong>Broekn Links:</strong> <span v-html="broken"></span></li>
+        <li><strong>Broken Links:</strong> <span v-html="broken"></span></li>
         <li><strong>Time Elapsed:</strong> <span v-html="time"></span></li>
       </ul>
       <ul id="link-check-output" class="text-small bare">

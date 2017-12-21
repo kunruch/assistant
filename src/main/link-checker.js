@@ -2,6 +2,7 @@
 import blc from 'broken-link-checker'
 
 let activeChecker = null
+let pageLinks = []
 
 export default {
 
@@ -13,7 +14,7 @@ export default {
         sendPageData(data, pageUrl, event)
       },
       page: function (error, pageUrl) {
-        if (error != null) {
+        if (error != null && !error.message.startsWith('Expected type "text/html"')) {
           let errorType = error.code !== 200 ? 'error' : 'warning'
           sendPageError(pageUrl, `${error.name} : ${error.message}`, errorType, event)
         }
@@ -38,16 +39,27 @@ export default {
 }
 
 function sendPageData (data, pageUrl, event) {
+  // reset page links
+  pageLinks = []
   event.sender.send('append-linkcheck-page', pageUrl)
+}
+
+function sendPageError (pageUrl, error, errorType, event) {
+  // reset page links
+  pageLinks = []
+  event.sender.send('append-linkcheck-page-error', pageUrl, error, errorType)
 }
 
 function sendLinkResult (result, event) {
   var url = result.url.resolved === null ? result.url.original : result.url.resolved
   var status = 'OK'
+  if (pageLinks.indexOf(url) >= 0) {
+    return
+  }
   if (result.broken === true) {
     status = blc[result.brokenReason]
   } else if (result.http.cached) {
-    // instead of excluding cached links, we can exclude duplicate links in front-end
+    // instead of excluding cached links, we have excluded duplicates
   } else if (result.excluded === true) {
     status = blc[result.excludedReason]
   }
@@ -57,8 +69,5 @@ function sendLinkResult (result, event) {
   } else {
     event.sender.send('append-linkcheck-error', url, status)
   }
-}
-
-function sendPageError (pageUrl, error, errorType, event) {
-  event.sender.send('append-linkcheck-page-error', pageUrl, error, errorType)
+  pageLinks.push(url)
 }

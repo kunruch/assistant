@@ -27,7 +27,9 @@
       </div>
     </header>
     <main>
-      <router-view></router-view>
+      <keep-alive>
+        <router-view></router-view>
+      </keep-alive>
     </main>
   </div>
 </template>
