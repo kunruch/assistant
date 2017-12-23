@@ -14,7 +14,7 @@
             internal configurations, using the project structure, building your application,
             and so much more.
           </p>
-           <router-link class="button button-rounded button-primary text-small" to="/link-checker">Broken Link Checker</router-link>
+           <router-link class="button button-rounded button-primary text-small" to="/tools/link-checker">Broken Link Checker</router-link>
         </div>
         <div class="doc">
           <h3 class="h4">Other Documentation</h3>

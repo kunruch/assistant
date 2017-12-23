@@ -65,6 +65,13 @@
   #app {
     min-height: 100vh;
     background: #fcfcfc;
+    display: flex;
+    flex-direction: column;
+  }
+
+  main {
+    flex: 1;
+    display: flex;
   }
 
   .menu-item {

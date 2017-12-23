@@ -11,9 +11,19 @@ export default new Router({
       component: require('@/views/LandingPage').default
     },
     {
-      path: '/link-checker',
-      name: 'link-checker',
-      component: require('@/views/LinkChecker').default
+      path: '/tools',
+      component: require('@/views/tools/Tools').default,
+      children: [
+        {
+          path: '',
+          redirect: 'link-checker'
+        },
+        {
+          path: 'link-checker',
+          name: 'link-checker',
+          component: require('@/views/tools/LinkChecker').default
+        }
+      ]
     },
     {
       path: '*',
