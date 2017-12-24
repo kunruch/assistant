@@ -1,0 +1,28 @@
+
+  $color-primary: #3490DC;
+  $size-site-header-height: 60px;
+  $color-background-dark: #2c2c2c;
+  $color-background-light: #F8FAFC;
+  $color-text:  #3D4852;
+  $color-headings: #22292F;
+  $color-default-border: #DAE1E7;
+  $color-header-default-background: #F8FAFC;
+  $color-footer-default-background: #F1F5F8;
+  @import "~mmcss/src/mm";
+  @import "header";
+  @import "layout";
+  @import "pane-menu";
+
+  body, html {
+    font-size: 14px;
+  }
+
+  /** Extra styles */
+  button:disabled,
+  button:disabled:hover
+  button[disabled],
+  button[disabled]:hover{
+    border: 1px solid #999999;
+    background-color: #cccccc;
+    color: #666666;
+  }

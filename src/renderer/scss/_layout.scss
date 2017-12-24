@@ -1,0 +1,37 @@
+
+#app {
+  min-height: 100vh;
+  background: $color-background-light;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
+  display: flex;
+}
+
+#wrapper {
+  display: flex;
+  flex: 1;
+}
+
+#left-pane {
+  background: #F1F5F8;
+  flex: 0 0 300px;
+  border-right: 1px solid #DAE1E7;
+}
+
+#main-pane {
+  background: white;
+  flex: 1;
+}
+
+.pane-title {
+  font-size: 2rem;
+  line-height: 8rem;
+  font-weight: 300;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  text-align: center;
+}

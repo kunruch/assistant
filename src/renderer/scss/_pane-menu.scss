@@ -1,0 +1,33 @@
+.pane-menu {
+  margin-top: 0;
+  border-top: 1px solid #DAE1E7;
+
+  li {
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2px;
+    line-height: 4rem;
+    font-weight: 400;
+    padding: 0 12px;
+    background: #fafafa;
+    color: #777;
+    border-bottom: 1px solid #DAE1E7;
+    margin: 0;
+    cursor: pointer;
+
+    &.active, &:hover {
+      background: white;
+      color: #333;
+    }
+
+    &.active {      
+      margin-right: -1px;
+    }
+
+    img {
+      float: left;
+      height: 1.8rem;
+      margin: 14px 8px;
+    }
+  }
+}

@@ -1,0 +1,24 @@
+
+.header{
+  .menu-item {
+    text-align: center;
+  }
+
+  .menu-item a {
+    opacity: 1;
+    line-height: 1;
+    text-transform: uppercase;
+    font-size: 70%;
+    letter-spacing: 1px;
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+
+  .menu-item img {
+    height: 40px;
+    padding: 6px;
+    display: block;
+  }
+}
