@@ -1,10 +1,10 @@
 <template>
-  <div id="content" class="container section">
-    <router-link to="/tools">Tools</router-link> > <span class="text-muted">Broken Link Checker</span>
-    <input v-model="url" id="url" type="text" placeholder="http://example.com"/>
-    <button class="button-primary" @click="beginScan()" :disabled="scanning"><i class="la la-play"></i>
- Begin Scan</button>
-    <div>
+  <div id="content" class="container">
+    <div class="input-pane">
+      <input v-model="url" id="url" type="text" placeholder="http://example.com"/>
+      <button class="button-primary" @click="beginScan()" :disabled="scanning"><i class="la la-play"></i> Begin Scan</button>
+    </div>
+    <div class="result-pane">
       <ul class="status bare">
         <li><strong>Status:</strong> <span v-html="status"></span></li>
         <li><strong>Links Checked:</strong> <span v-html="links"></span></li>
@@ -116,6 +116,16 @@
 
 
 <style lang="scss">
+  #content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .result-pane {
+    flex: 1;
+  }
+
   .status {
     display: flex;
 
