@@ -17,8 +17,9 @@
         model: {
           title: 'Sites',
           menu: [
-            { name: 'Overview', icon: '', to: '/sites/overview' },
-            { name: 'New Site', icon: '', to: '/sites/new' }
+            { name: 'Overview', icon: 'home', to: '/sites/overview' },
+            { name: 'Localhost', icon: 'sites', to: '/sites/1' },
+            { name: 'New Site', icon: 'new', to: '/sites/new' }
           ]
         }
       }
