@@ -96,14 +96,14 @@ a {
 }
 
 .ok {
-  color: green;
+  color: #38C172;
 }
 
 .error {
-  color: red;
+  color: #E3342F;
 }
 
 .info {
-  color: orange;
+  color: #F6993F;
 }
 </style>
