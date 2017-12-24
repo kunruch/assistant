@@ -1,18 +1,6 @@
 <template>
   <div id="wrapper">
-    <div id="left-pane">
-      <div class="pane-title">
-        Tools
-      </div>
-      <ul class="bare pane-menu">
-        <li class="active">
-          <img :src="icons.brokenLink"> Broken Link Checker
-        </li>
-        <li>
-          <img :src="icons.seoAnalyzer"> SEO Analyzer
-        </li>
-      </ul>
-    </div>
+    <left-pane :model="model"></left-pane>
     <div id="main-pane">
       <router-view></router-view>
     </div>
@@ -21,11 +9,18 @@
 
 
 <script>
-  import icons from '../../icons'
+  import LeftPane from '../components/LeftPane'
   export default {
+    components: { LeftPane },
     data () {
       return {
-        icons: icons
+        model: {
+          title: 'Tools',
+          menu: [
+            { name: 'Broken Link Checker', icon: 'brokenLink', to: '/tools/link-checker' },
+            { name: 'SEO Analyzer', icon: 'seoAnalyzer', to: '/tools/seo-analyzer' }
+          ]
+        }
       }
     }
   }
@@ -33,4 +28,3 @@
 
 <style lang="scss">
 </style>
-

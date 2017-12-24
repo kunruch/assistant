@@ -1,18 +1,6 @@
 <template>
   <div id="wrapper">
-    <div id="left-pane">
-      <div class="pane-title">
-        Sites
-      </div>
-      <ul class="bare pane-menu">
-        <li class="active">
-          <img :src="icons.brokenLink"> Overview
-        </li>
-        <li>
-          <img :src="icons.seoAnalyzer"> New Site
-        </li>
-      </ul>
-    </div>
+    <left-pane :model="model"></left-pane>
     <div id="main-pane">
       <router-view></router-view>
     </div>
@@ -21,11 +9,18 @@
 
 
 <script>
-  import icons from '../../icons'
+  import LeftPane from '../components/LeftPane'
   export default {
+    components: { LeftPane },
     data () {
       return {
-        icons: icons
+        model: {
+          title: 'Sites',
+          menu: [
+            { name: 'Overview', icon: '', to: '/sites/overview' },
+            { name: 'New Site', icon: '', to: '/sites/new' }
+          ]
+        }
       }
     }
   }

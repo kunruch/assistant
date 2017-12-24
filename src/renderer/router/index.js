@@ -19,9 +19,8 @@ export default new Router({
           component: require('@/views/sites/Overview').default
         },
         {
-          path: 'new',
-          name: 'sites-new',
-          component: require('@/views/sites/Sites').default
+          path: '*',
+          redirect: ''
         }
       ]
     },
@@ -37,6 +36,10 @@ export default new Router({
           path: 'link-checker',
           name: 'link-checker',
           component: require('@/views/tools/LinkChecker').default
+        },
+        {
+          path: '*',
+          redirect: ''
         }
       ]
     },
