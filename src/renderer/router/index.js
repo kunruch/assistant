@@ -6,9 +6,24 @@ Vue.use(Router)
 export default new Router({
   routes: [
     {
-      path: '/',
-      name: 'landing-page',
-      component: require('@/views/LandingPage').default
+      path: '/sites',
+      component: require('@/views/sites/Sites').default,
+      children: [
+        {
+          path: '',
+          redirect: 'overview'
+        },
+        {
+          path: 'overview',
+          name: 'sites-overview',
+          component: require('@/views/sites/Overview').default
+        },
+        {
+          path: 'new',
+          name: 'sites-new',
+          component: require('@/views/sites/Sites').default
+        }
+      ]
     },
     {
       path: '/tools',
@@ -27,7 +42,7 @@ export default new Router({
     },
     {
       path: '*',
-      redirect: '/'
+      redirect: '/sites'
     }
   ]
 })
