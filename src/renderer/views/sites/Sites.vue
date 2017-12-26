@@ -50,7 +50,7 @@
                   resolve('Please enter a value')
                 } else if (!value.startsWith('http://') &&
                       !value.startsWith('https://')) {
-                  resolve('Please enter a valid url ' + value)
+                  resolve('Please enter a valid url')
                 } else {
                   resolve()
                 }
@@ -78,11 +78,10 @@
           if (result.value) {
             let self = this
             let sites = this.$store.state.Sites
-            let site = { name: result.value[1], icon: 'sites', url: result.value[0], to: `/sites/${result.value[0]}` }
+            let site = { name: result.value[1], icon: 'sites', url: result.value[0], to: `/sites/view/${result.value[0]}` }
             this.$store.dispatch('addSite', site).then(() => {
               self.model = sites.all
               swal({
-                position: 'bottom-right',
                 type: 'success',
                 title: 'New Site Added',
                 showConfirmButton: false,

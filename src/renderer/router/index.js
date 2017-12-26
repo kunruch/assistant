@@ -19,6 +19,10 @@ export default new Router({
           component: require('@/views/sites/Overview').default
         },
         {
+          path: 'view/:url',
+          component: require('@/views/sites/SitePage').default
+        },
+        {
           path: '*',
           redirect: ''
         }

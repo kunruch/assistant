@@ -61,6 +61,7 @@
     background: #fafafa;
     color: #777;
     border-bottom: 1px solid #DAE1E7;
+    text-decoration: none;
     margin: 0;
     cursor: pointer;
 

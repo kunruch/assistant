@@ -20,7 +20,7 @@ const mutations = {
 
 const actions = {
   loadSites ({ commit }) {
-    cleanStore()
+    // store.set('sites', {})
     var sites = store.get('sites.all')
     if (sites) {
       commit('addSites', sites)
@@ -45,11 +45,6 @@ const actions = {
       }
     })
   }
-}
-
-// only for debug purpose
-function cleanStore () {
-  store.set('sites', {})
 }
 
 export default {
