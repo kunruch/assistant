@@ -41,7 +41,6 @@ const actions = {
         resolve()
       } else {
         // handle error
-        console.log('Site already exist for URL: ' + site.url)
         reject(new Error('Site already exist for URL: ' + site.url))
       }
     })

@@ -14,17 +14,14 @@
 
 <script>
   import LeftPane from '../components/LeftPane'
+  import swal from 'sweetalert2'
 
   export default {
     components: { LeftPane },
     data () {
       return {
         title: 'Sites',
-        model: [
-          // { name: 'Overview', icon: 'home', to: '/sites/overview' },
-          // { name: 'Localhost', icon: 'sites', to: '/sites/1' },
-          // { name: 'New Site', icon: 'new', to: '/sites/new' }
-        ]
+        model: []
       }
     },
     created () {
@@ -35,12 +32,66 @@
     },
     methods: {
       addNewSite () {
-        let sites = this.$store.state.Sites
-        let site = { name: 'Localhost', icon: 'sites', url: 'http://localhost:8080', to: '/sites/http://localhost:8080' }
-        this.$store.dispatch('addSite', site).then(() => {
-          this.model = sites.all
-        }, error => {
-          console.error(error)
+        swal.setDefaults({
+          input: 'text',
+          confirmButtonText: 'Next &rarr;',
+          showCancelButton: true,
+          progressSteps: ['1', '2']
+        })
+
+        var steps = [
+          {
+            title: 'Add a Site',
+            text: 'Enter Website URL',
+            inputPlaceholder: 'https://example.com',
+            inputValidator: (value) => {
+              return new Promise((resolve) => {
+                if (value.trim().length === 0) {
+                  resolve('Please enter a value')
+                } else if (!value.startsWith('http://') &&
+                      !value.startsWith('https://')) {
+                  resolve('Please enter a valid url ' + value)
+                } else {
+                  resolve()
+                }
+              })
+            }
+          },
+          {
+            title: 'Add a Site',
+            text: 'Enter Website Name',
+            inputPlaceholder: 'My Website',
+            inputValidator: (value) => {
+              return new Promise((resolve) => {
+                if (value.trim().length === 0) {
+                  resolve('Please enter a value')
+                } else {
+                  resolve()
+                }
+              })
+            }
+          }
+        ]
+
+        swal.queue(steps).then((result) => {
+          swal.resetDefaults()
+          if (result.value) {
+            let self = this
+            let sites = this.$store.state.Sites
+            let site = { name: result.value[1], icon: 'sites', url: result.value[0], to: `/sites/${result.value[0]}` }
+            this.$store.dispatch('addSite', site).then(() => {
+              self.model = sites.all
+              swal({
+                position: 'bottom-right',
+                type: 'success',
+                title: 'New Site Added',
+                showConfirmButton: false,
+                timer: 1500
+              })
+            }, error => {
+              swal('Oops..', error.message, 'error')
+            })
+          }
         })
       }
     }
