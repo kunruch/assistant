@@ -1,6 +1,6 @@
 <template>
   <div id="wrapper">
-    <left-pane :model="model"></left-pane>
+    <left-pane :model="model" :title="title"></left-pane>
     <div id="main-pane">
       <router-view></router-view>
     </div>
@@ -10,17 +10,16 @@
 
 <script>
   import LeftPane from '../components/LeftPane'
+
   export default {
     components: { LeftPane },
     data () {
       return {
-        model: {
-          title: 'Tools',
-          menu: [
-            { name: 'Broken Link Checker', icon: 'brokenLink', to: '/tools/link-checker' },
-            { name: 'SEO Analyzer', icon: 'seoAnalyzer', to: '/tools/seo-analyzer' }
-          ]
-        }
+        title: 'Tools',
+        model: [
+          { name: 'Broken Link Checker', icon: 'brokenLink', to: '/tools/link-checker' },
+          { name: 'SEO Analyzer', icon: 'seoAnalyzer', to: '/tools/seo-analyzer' }
+        ]
       }
     }
   }

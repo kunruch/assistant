@@ -1,10 +1,13 @@
 <template>
   <div id="left-pane">
-    <div class="pane-title">
-       {{ model.title }}
+    <div class="pane-header">
+      <div class="pane-title">
+        {{ title }}
+      </div>
+      <slot name="below-title"></slot>
     </div>
     <ul class="bare pane-menu">
-      <li v-for="menu in model.menu" :key="menu.name">
+      <li v-for="menu in model" :key="menu.name">
         <router-link :to="menu.to">
           <img :src="icons[menu.icon]"> {{ menu.name }}
          </router-link>
@@ -18,7 +21,8 @@
   export default {
     name: 'left-pane',
     props: {
-      model: Object
+      title: String,
+      model: Array
     },
     data () {
       return {
@@ -29,6 +33,15 @@
 </script>
 
 <style lang="scss">
+.pane-title {
+  font-size: 2rem;
+  line-height: 8rem;
+  font-weight: 300;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  text-align: center;
+}
+
 .pane-menu {
   margin-top: 0;
   border-top: 1px solid #DAE1E7;
