@@ -1,15 +1,15 @@
 
   $color-primary: #3490DC;
-  $size-site-header-height: 60px;
-  $color-background-dark: #2c2c2c;
+  $size-site-header-height: 48px;
+  $color-background-dark: #3D4852;
   $color-background-light: #F8FAFC;
   $color-text:  #3D4852;
   $color-headings: #22292F;
   $color-default-border: #DAE1E7;
-  $color-header-default-background: #F8FAFC;
+  $color-header-default-background: #FFFFFF;
   $color-footer-default-background: #F1F5F8;
   @import "~mmcss/src/mm";
-  @import "header";
+  @import "menu-bar";
   @import "layout";
 
   body, html {

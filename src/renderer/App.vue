@@ -9,19 +9,9 @@
           </router-link>
         </div>
         <div class="menu-toggle">
-          <input type="checkbox" id="menu-toggle">
-          <label class="header-right" for="menu-toggle"><span class="css-icon-hamburger"><span>Toggle</span></span><span>Menu</span></label>
           <div class="menu-toggle-content">
-            <nav role="navigation">
-              <ul class="menu">
-                <li class="menu-item"><router-link to="/sites"><img :src="icons.sites">Sites</router-link></li>
-                <li class="menu-item"><router-link to="/tools"><img :src="icons.tools">Tools</router-link></li>
-                <li class="menu-item"><router-link to="/tasks"><img :src="icons.tasks">Tasks</router-link></li>
-                <li class="menu-item"><router-link to="/help"><img :src="icons.help">Help</router-link></li>
-              </ul>
-            </nav>
             <div class="header-right">
-              <button class="button button-ghost" @click="signIn()" v-if="user === null"><i class="la la-google"></i>Sign In</button>
+              <button class="button button-primary" @click="signIn()" v-if="user === null"><i class="la la-google"></i> Sign In</button>
               <div class="user-logged-in" v-if="user !== null" @click="displayUserPofile()">
                 <img class="img-user" :src="user.image.url"/>
                 <span class="user-name">{{ user.displayName }}</span>
@@ -32,6 +22,16 @@
       </div>
     </header>
     <main>
+      <nav class="menu-bar" role="navigation">
+        <ul>
+          <li class="menu-item"><router-link to="/sites"><img :src="icons.sites">Sites</router-link></li>
+          <li class="menu-item"><router-link to="/tools"><img :src="icons.tools">Tools</router-link></li>
+          <li class="menu-item"><router-link to="/tasks"><img :src="icons.tasks">Tasks</router-link></li>
+          <li class="menu-item"><router-link to="/help"><img :src="icons.help">Help</router-link></li>
+        </ul>
+
+        <div class="settings-menu menu-item"><router-link to="/settings"><img :src="icons.settings"></router-link></div>
+      </nav>
       <keep-alive>
         <router-view></router-view>
       </keep-alive>
@@ -111,9 +111,9 @@
   }
 
   .img-user {
-    height: 32px;
-    border-radius: 32px;
-    margin-top: 16px;
+    height: 28px;
+    border-radius: 28px;
+    margin-top: 10px;
     margin-right: 10px;
     float: left;
   }

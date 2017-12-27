@@ -1,5 +1,14 @@
 
-.header{
+.menu-bar{
+  width: 60px;
+  background: $color-background-dark;
+  display: flex;
+  flex-direction: column;
+
+  ul {
+    flex: 1;
+  }
+
   .menu-item {
     text-align: center;
   }
@@ -10,6 +19,8 @@
     text-transform: uppercase;
     font-size: 70%;
     letter-spacing: 1px;
+    color: white;
+    text-decoration: none;
 
     &:hover {
       opacity: 0.8;
@@ -18,7 +29,12 @@
 
   .menu-item img {
     height: 40px;
-    padding: 6px;
+    padding: 10px 5px 0;
     display: block;
+    margin: 0 auto;
+  }
+
+  .settings-menu {
+    padding-bottom: 1.5rem;
   }
 }
