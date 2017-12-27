@@ -21,8 +21,8 @@
               </ul>
             </nav>
             <div class="header-right">
-              <button class="button button-ghost" @click="signIn()" v-if="user === null">Sign In</button>
-              <div v-if="user !== null">
+              <button class="button button-ghost" @click="signIn()" v-if="user === null"><i class="la la-google"></i>Sign In</button>
+              <div class="user-logged-in" v-if="user !== null" @click="logout()">
                 <img class="img-user" :src="user.image.url"/>
                 <span class="user-name">{{ user.displayName }}</span>
               </div>
@@ -52,19 +52,23 @@
       }
     },
     created () {
-      this.loadUser()
+      if (store.has('user')) {
+        this.user = store.get('user')
+      }
+
+      this.$electron.ipcRenderer.on('user-profile-refresh', (event, user) => {
+        this.user = user
+      })
+    },
+    beforeDestroy () {
+      this.$electron.ipcRenderer.removeAllListeners('user-profile-refresh')
     },
     methods: {
       signIn () {
-        let self = this
-        this.$electron.ipcRenderer.send('google-auth').then(() => {
-          self.loadUser()
-        })
+        this.$electron.ipcRenderer.send('google-auth')
       },
-      loadUser () {
-        if (store.has('user')) {
-          this.user = store.get('user')
-        }
+      logout () {
+        this.$electron.ipcRenderer.send('google-signout')
       }
     }
   }
@@ -72,6 +76,10 @@
 
 <style lang="scss">
   @import "~./../scss/main.scss";
+
+  .user-logged-in {
+    cursor: pointer;
+  }
 
   .img-user {
     height: 32px;

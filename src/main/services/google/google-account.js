@@ -1,6 +1,7 @@
 import store from './../../store'
 import google from 'googleapis'
 import {BrowserWindow} from 'electron'
+require('dotenv').config()
 
 var plus = google.plus('v1')
 
@@ -69,23 +70,29 @@ function authorizeApp (mainWindow) {
 }
 
 export default {
-  googleAuth (mainWindow) {
+  googleAuth (mainWindow, event) {
     let self = this
     if (store.has('auth.tokens')) {
-      self.saveAuthtokens(store.get('auth.tokens'))
+      self.saveAuthtokens(store.get('auth.tokens'), event)
     } else {
       authorizeApp(mainWindow).then((code) => {
         oauth2Client.getToken(code, function (err, tokens) {
           // Now tokens contains an access_token and an optional refresh_token. Save them.
           if (!err) {
             store.set('auth.tokens', tokens)
-            self.saveAuthtokens(tokens)
+            self.saveAuthtokens(tokens, event)
           }
         })
       })
     }
   },
-  saveAuthtokens (tokens) {
+  signOut (event) {
+    // reset saved tokens and remove user profile data
+    store.delete('auth.tokens')
+    store.delete('user')
+    event.sender.send('user-profile-refresh', null)
+  },
+  saveAuthtokens (tokens, event) {
     oauth2Client.credentials = tokens
 
     // load user profile after every token update
@@ -94,8 +101,8 @@ export default {
       auth: oauth2Client
     }, function (err, response) {
       if (!err) {
-        console.log(response)
         store.set('user', response)
+        event.sender.send('user-profile-refresh', response)
       }
     })
   }

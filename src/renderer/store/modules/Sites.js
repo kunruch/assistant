@@ -70,7 +70,7 @@ const actions = {
     if (index >= 0) {
       commit('deleteSite', index, id)
       store.set('sites.all', state.all)
-      store.set(`sites.siteMap.${id}`, null)
+      store.delete(`sites.siteMap.${id}`)
     }
   }
 }
