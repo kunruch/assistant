@@ -24,7 +24,6 @@ const mutations = {
   updateProperty (state, payload) {
     let site = state.siteMap[payload.id]
     site[payload.property] = payload.value
-    console.log(payload)
     state.siteMap[payload.id] = site
     state.all[payload.index] = site
   }

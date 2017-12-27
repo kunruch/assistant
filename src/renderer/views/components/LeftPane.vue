@@ -9,7 +9,9 @@
     <ul class="bare pane-menu">
       <li v-for="menu in model" :key="menu.name">
         <router-link :to="menu.to">
-          <img :src="icons[menu.icon]"> {{ menu.name }}
+          <img v-if="menu.favicon" :src="menu.favicon"/>
+          <img v-else :src="icons[menu.icon]"/>
+          <span> {{ menu.name }}</span>
          </router-link>
       </li>
     </ul>
