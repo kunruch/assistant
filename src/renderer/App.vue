@@ -22,7 +22,7 @@
             </nav>
             <div class="header-right">
               <button class="button button-ghost" @click="signIn()" v-if="user === null"><i class="la la-google"></i>Sign In</button>
-              <div class="user-logged-in" v-if="user !== null" @click="logout()">
+              <div class="user-logged-in" v-if="user !== null" @click="displayUserPofile()">
                 <img class="img-user" :src="user.image.url"/>
                 <span class="user-name">{{ user.displayName }}</span>
               </div>
@@ -42,6 +42,7 @@
 <script>
   import icons from './icons'
   import store from './store/store'
+  import swal from 'sweetalert2'
 
   export default {
     name: 'assistant',
@@ -69,6 +70,34 @@
       },
       logout () {
         this.$electron.ipcRenderer.send('google-signout')
+      },
+      displayUserPofile () {
+        swal({
+          title: this.user.displayName,
+          text: 'Your Google account is connected.',
+          imageUrl: this.user.image.url,
+          imageWidth: 50,
+          imageHeight: 50,
+          imageAlt: this.user.displayName,
+          showCancelButton: true,
+          cancelButtonColor: '#d33',
+          cancelButtonText: '<i class="la la-close"></i> Disconnect'
+        }).then((result) => {
+          if (result.dismiss === 'cancel') {
+            swal({
+              title: 'Are you sure?',
+              text: "You won't be able to access data from this Google account unless you sign in again!",
+              type: 'warning',
+              showCancelButton: true,
+              confirmButtonText: 'Yes, disconnect!'
+            }).then((result) => {
+              if (result.value) {
+                this.logout()
+                console.log('logged out')
+              }
+            })
+          }
+        })
       }
     }
   }
