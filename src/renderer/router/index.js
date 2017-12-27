@@ -19,7 +19,7 @@ export default new Router({
           component: require('@/views/sites/Overview').default
         },
         {
-          path: 'view/:url',
+          path: 'view/:id',
           component: require('@/views/sites/SitePage').default
         },
         {

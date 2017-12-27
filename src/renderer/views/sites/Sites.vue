@@ -78,7 +78,7 @@
           if (result.value) {
             let self = this
             let sites = this.$store.state.Sites
-            let site = { name: result.value[1], icon: 'sites', url: result.value[0], to: `/sites/view/${result.value[0]}` }
+            let site = { name: result.value[1], icon: 'sites', url: result.value[0] }
             this.$store.dispatch('addSite', site).then(() => {
               self.model = sites.all
               swal({
