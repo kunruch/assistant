@@ -20,14 +20,17 @@
     components: { LeftPane },
     data () {
       return {
-        title: 'Sites',
-        model: []
+        title: 'Sites'
+      }
+    },
+    computed: {
+      model () {
+        return this.$store.state.Sites.all
       }
     },
     created () {
-      let sites = this.$store.state.Sites
       this.$store.dispatch('loadSites').then(() => {
-        this.model = sites.all
+        console.log('Sites loaded')
       })
     },
     methods: {
@@ -76,11 +79,8 @@
         swal.queue(steps).then((result) => {
           swal.resetDefaults()
           if (result.value) {
-            let self = this
-            let sites = this.$store.state.Sites
             let site = { name: result.value[1], icon: 'sites', url: result.value[0] }
             this.$store.dispatch('addSite', site).then((addedSite) => {
-              self.model = sites.all
               swal({
                 type: 'success',
                 title: 'New Site Added',
