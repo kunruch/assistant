@@ -2,6 +2,8 @@
 
 import { app, BrowserWindow, ipcMain } from 'electron'
 import linkChecker from './link-checker'
+import googleAccount from './services/google/google-account'
+require('dotenv').config()
 
 /**
  * Set `__static` path to static files in production
@@ -53,6 +55,11 @@ ipcMain.on('check-links', (event, data) => {
 
 ipcMain.on('pause-check-links', (event, data) => {
   linkChecker.pauseCheckLinks(event, data)
+})
+
+ipcMain.on('google-auth', (event, data) => {
+  console.log('sign in started..')
+  googleAccount.googleAuth(mainWindow)
 })
 
 /**

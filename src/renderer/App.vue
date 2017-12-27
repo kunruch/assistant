@@ -21,6 +21,11 @@
               </ul>
             </nav>
             <div class="header-right">
+              <button class="button button-ghost" @click="signIn()" v-if="user === null">Sign In</button>
+              <div v-if="user !== null">
+                <img class="img-user" :src="user.image.url"/>
+                <span class="user-name">{{ user.displayName }}</span>
+              </div>
             </div>
           </div>
         </div>
@@ -36,11 +41,30 @@
 
 <script>
   import icons from './icons'
+  import store from './store/store'
+
   export default {
     name: 'assistant',
     data () {
       return {
-        icons: icons
+        icons: icons,
+        user: null
+      }
+    },
+    created () {
+      this.loadUser()
+    },
+    methods: {
+      signIn () {
+        let self = this
+        this.$electron.ipcRenderer.send('google-auth').then(() => {
+          self.loadUser()
+        })
+      },
+      loadUser () {
+        if (store.has('user')) {
+          this.user = store.get('user')
+        }
       }
     }
   }
@@ -48,4 +72,16 @@
 
 <style lang="scss">
   @import "~./../scss/main.scss";
+
+  .img-user {
+    height: 32px;
+    border-radius: 32px;
+    margin-top: 16px;
+    margin-right: 10px;
+    float: left;
+  }
+
+  .user-name {
+    font-weight: 600;
+  }
 </style>
