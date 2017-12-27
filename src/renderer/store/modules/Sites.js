@@ -6,7 +6,8 @@ const state = {
 }
 
 const mutations = {
-  addSites (state, sites) {
+  setSites (state, sites) {
+    state.all = []
     state.all.push(...sites)
   },
   setSiteMap (state, siteMap) {
@@ -23,7 +24,7 @@ const actions = {
     // store.set('sites', {})
     var sites = store.get('sites.all')
     if (sites) {
-      commit('addSites', sites)
+      commit('setSites', sites)
     }
 
     var siteMap = store.get('sites.siteMap')
@@ -46,7 +47,7 @@ const actions = {
         store.set('sites.all', state.all)
         store.set(`sites.siteMap.${id}`, site)
         console.dir(store.get('sites.siteMap'))
-        resolve()
+        resolve(site)
       } else {
         // handle error
         reject(new Error('Site already exist for URL: ' + site.url))

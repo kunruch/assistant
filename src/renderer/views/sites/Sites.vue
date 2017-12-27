@@ -79,13 +79,15 @@
             let self = this
             let sites = this.$store.state.Sites
             let site = { name: result.value[1], icon: 'sites', url: result.value[0] }
-            this.$store.dispatch('addSite', site).then(() => {
+            this.$store.dispatch('addSite', site).then((addedSite) => {
               self.model = sites.all
               swal({
                 type: 'success',
                 title: 'New Site Added',
                 showConfirmButton: false,
                 timer: 1500
+              }).then(() => {
+                this.$router.push(addedSite.to)
               })
             }, error => {
               swal('Oops..', error.message, 'error')
