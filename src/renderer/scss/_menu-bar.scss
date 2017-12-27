@@ -14,7 +14,8 @@
   }
 
   .menu-item a {
-    opacity: 1;
+    display: block;
+    opacity: 0.6;
     line-height: 1;
     text-transform: uppercase;
     font-size: 70%;
@@ -23,15 +24,20 @@
     text-decoration: none;
 
     &:hover {
-      opacity: 0.8;
+      opacity: 1;
+    }
+
+    &.router-link-active {
+      font-weight: 600;
+      opacity: 1;
     }
   }
 
   .menu-item img {
     height: 40px;
-    padding: 10px 5px 0;
+    padding: 5px;
     display: block;
-    margin: 0 auto;
+    margin: 10px auto 5px;
   }
 
   .settings-menu {
