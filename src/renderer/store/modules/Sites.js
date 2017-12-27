@@ -16,6 +16,10 @@ const mutations = {
   addSite (state, site) {
     state.all.push(site)
     state.siteMap[site.id] = site
+  },
+  deleteSite (state, index, id) {
+    state.all.splice(index, 1)
+    state.siteMap[id] = null
   }
 }
 
@@ -53,6 +57,21 @@ const actions = {
         reject(new Error('Site already exist for URL: ' + site.url))
       }
     })
+  },
+  deleteSite ({ commit }, id) {
+    var index = -1
+    for (var i = 0; i < state.all.length; i++) {
+      if (state.all[i].id === id) {
+        index = i
+        break
+      }
+    }
+
+    if (index >= 0) {
+      commit('deleteSite', index, id)
+      store.set('sites.all', state.all)
+      store.set(`sites.siteMap.${id}`, null)
+    }
   }
 }
 

@@ -6,7 +6,7 @@
         <a class="text-small" href="#" @click="open(model.url)">{{ model.url }}</a>
       </div>
       <p class="text-small pull-right">
-        <button class="button button-ghost" @click="deleteSite()"><i class="la la-trash"></i> Delete Site</button>
+        <button class="button button-ghost button-rounded" @click="deleteSite()"><i class="la la-trash"></i> Delete Site</button>
       </p>
     </div>
     <div class="site-overview">
@@ -45,12 +45,14 @@
           confirmButtonText: 'Yes, delete it!'
         }).then((result) => {
           if (result.value) {
-            swal(
-              'Deleted!',
-              'Your site has been deleted.',
-              'success'
-            ).then(() => {
-              this.$router.push({ name: 'sites-overview' })
+            this.$store.dispatch('deleteSite', this.model.id).then(() => {
+              swal(
+                'Deleted!',
+                'Your site has been deleted.',
+                'success'
+              ).then(() => {
+                this.$router.push({ name: 'sites-overview' })
+              })
             })
           }
         })

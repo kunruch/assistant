@@ -30,7 +30,7 @@
     },
     created () {
       this.$store.dispatch('loadSites').then(() => {
-        console.log('Sites loaded')
+        // console.log('Sites loaded')
       })
     },
     methods: {
