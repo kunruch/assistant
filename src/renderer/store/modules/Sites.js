@@ -17,9 +17,16 @@ const mutations = {
     state.all.push(site)
     state.siteMap[site.id] = site
   },
-  deleteSite (state, index, id) {
-    state.all.splice(index, 1)
-    state.siteMap[id] = null
+  deleteSite (state, payload) {
+    state.all.splice(payload.index, 1)
+    state.siteMap[payload.id] = null
+  },
+  updateProperty (state, payload) {
+    let site = state.siteMap[payload.id]
+    site[payload.property] = payload.value
+    console.log(payload)
+    state.siteMap[payload.id] = site
+    state.all[payload.index] = site
   }
 }
 
@@ -43,6 +50,7 @@ const actions = {
     // which is why we cannot allow editing of URLs once added
     site.id = id
     site.to = `/sites/view/${encodeURIComponent(id)}`
+    site.favicon = ''
 
     return new Promise((resolve, reject) => {
       if (!store.has(`sites.siteMap.${id}`)) {
@@ -68,9 +76,24 @@ const actions = {
     }
 
     if (index >= 0) {
-      commit('deleteSite', index, id)
+      commit('deleteSite', { index, id })
       store.set('sites.all', state.all)
       store.delete(`sites.siteMap.${id}`)
+    }
+  },
+  updateProperty ({ commit }, payload) {
+    var index = -1
+    for (var i = 0; i < state.all.length; i++) {
+      if (state.all[i].id === payload.id) {
+        index = i
+        break
+      }
+    }
+
+    if (index >= 0) {
+      commit('updateProperty', { index, id: payload.id, property: payload.property, value: payload.value })
+      store.set('sites.all', state.all)
+      store.set(`sites.siteMap.${payload.id}.${payload.property}`, payload.value)
     }
   }
 }

@@ -1,8 +1,9 @@
 'use strict'
 
 import { app, BrowserWindow, ipcMain } from 'electron'
-import linkChecker from './link-checker'
 import googleAccount from './services/google/google-account'
+import linkChecker from './services/link-checker'
+import favicon from './services/favicon'
 
 /**
  * Set `__static` path to static files in production
@@ -62,6 +63,10 @@ ipcMain.on('google-auth', (event, data) => {
 
 ipcMain.on('google-signout', (event, data) => {
   googleAccount.signOut(event)
+})
+
+ipcMain.on('fetch-favicon', (event, url) => {
+  favicon.fetch(event, url)
 })
 
 /**
