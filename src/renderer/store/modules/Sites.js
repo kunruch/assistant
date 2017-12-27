@@ -46,7 +46,7 @@ const actions = {
         commit('addSite', site)
         store.set('sites.all', state.all)
         store.set(`sites.siteMap.${id}`, site)
-        console.dir(store.get('sites.siteMap'))
+        // console.dir(store.get('sites.siteMap'))
         resolve(site)
       } else {
         // handle error
