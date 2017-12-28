@@ -11,10 +11,10 @@
         <button class="button button-ghost button-rounded" @click="deleteSite()"><i class="la la-trash"></i> Delete Site</button>
       </p>
     </div>
-    <div class="site-overview" v-if="model.analytics">
-      Account: {{ model.analytics.accountId }}
-      webPropertyId: {{ model.analytics.webPropertyId }}
-      profileId: {{ model.analytics.profileId }}
+    <div class="site-overview">
+      <code v-if="model.analytics">
+        Account: {{ model.analytics.accountId }} webPropertyId: {{ model.analytics.webPropertyId }} profileId: {{ model.analytics.profileId }}
+      </code>
     </div>
   </div>
 </template>
@@ -26,7 +26,10 @@
   export default {
     data () {
       return {
-        icons: icons
+        icons: icons,
+        analyticsData: {
+          today: {}
+        }
       }
     },
     computed: {
@@ -58,6 +61,12 @@
       // save analytics data if it was updated
       this.$electron.ipcRenderer.on('site-analytics-properties', (event, analytics) => {
         this.$store.dispatch('updateProperty', { id: this.model.id, property: 'analytics', value: analytics })
+      })
+
+      // load analytics data if it was updated
+      this.$electron.ipcRenderer.on('site-analytics-pageviews', (event, data) => {
+        this.analyticsData.today = data
+        console.log(data)
       })
     },
     beforeDestroy () {
@@ -98,6 +107,9 @@
         !this.model.analytics.profileId ||
         this.model.analytics.profileId === '') {
           this.$electron.ipcRenderer.send('find-analytics-properties', this.model.id)
+        } else {
+          // fetch page views for today
+          this.$electron.ipcRenderer.send('get-analytics-page-views', this.model, 'today', 'today')
         }
       }
     }

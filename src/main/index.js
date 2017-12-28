@@ -76,6 +76,10 @@ ipcMain.on('find-analytics-properties', (event, siteID) => {
   googleAccount.findAnalyticsProperties(siteID, event)
 })
 
+ipcMain.on('get-analytics-page-views', (event, site, startdate, enddate) => {
+  googleAccount.getPageViews(site, startdate, enddate, event)
+})
+
 /**
  * Auto Updater
  *

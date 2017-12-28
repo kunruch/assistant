@@ -136,6 +136,45 @@ export default {
         }
       })
     }
+  },
+  getPageViews (site, startdate, enddate, event) {
+    analytics.data.ga.get({
+      auth: oauth2Client,
+      'ids': 'ga:' + site.analytics.profileId,
+      'start-date': startdate,
+      'end-date': enddate,
+      'dimensions': 'ga:pagePath, ga:pageTitle',
+      'metrics': 'ga:pageviews',
+      'sort': '-ga:pageviews'
+    }, function (err, response) {
+      if (!err) {
+        var result = {
+          totalViews: 0,
+          data: []
+        }
+        // var formattedJson = JSON.stringify(response, null, 2)
+        // console.log(formattedJson)
+        result.totalViews = response.totalsForAllResults['ga:pageviews']
+
+        var rowsCount = response.rows ? response.rows.length : 0
+
+        for (var i = 0; i < rowsCount; i++) {
+          var row = response.rows[i]
+          var item = {
+            url: site.url + '' + row[0],
+            title: row[1],
+            pageViews: row[2]
+          }
+          result.data.push(item)
+        }
+        if (event) {
+          event.sender.send('site-analytics-pageviews', result)
+        }
+      } else {
+        // Log any errors.
+        console.log(err)
+      }
+    })
   }
 }
 
