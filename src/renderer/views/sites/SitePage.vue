@@ -11,7 +11,10 @@
         <button class="button button-ghost button-rounded" @click="deleteSite()"><i class="la la-trash"></i> Delete Site</button>
       </p>
     </div>
-    <div class="site-overview">
+    <div class="site-overview" v-if="model.analytics">
+      Account: {{ model.analytics.accountId }}
+      webPropertyId: {{ model.analytics.webPropertyId }}
+      profileId: {{ model.analytics.profileId }}
     </div>
   </div>
 </template>
@@ -40,15 +43,21 @@
     },
     watch: {
       // call again the method if the route changes
-      '$route': 'fetchFavicon'
+      '$route': 'loadSiteData'
     },
     created () {
-      this.fetchFavicon()
+      this.loadSiteData()
 
+      // save favicon data if it was updated
       this.$electron.ipcRenderer.on('favicon-url', (event, favicon, url) => {
         if (this.model.url === url && this.model.favicon !== favicon) {
           this.$store.dispatch('updateProperty', { id: this.model.id, property: 'favicon', value: favicon })
         }
+      })
+
+      // save analytics data if it was updted
+      this.$electron.ipcRenderer.on('site-analytics-properties', (event, analytics) => {
+        this.$store.dispatch('updateProperty', { id: this.model.id, property: 'analytics', value: analytics })
       })
     },
     methods: {
@@ -76,8 +85,16 @@
           }
         })
       },
-      fetchFavicon () {
+      loadSiteData () {
+        // fetch favicon everytime, we cache favicon for 24hrs so it is fine
         this.$electron.ipcRenderer.send('fetch-favicon', this.model.url)
+
+        // fetch analytics properties if we don't have one
+        if (!this.model.analytics ||
+        !this.model.analytics.profileId ||
+        this.model.analytics.profileId === '') {
+          this.$electron.ipcRenderer.send('find-analytics-properties', this.model.id)
+        }
       }
     }
   }

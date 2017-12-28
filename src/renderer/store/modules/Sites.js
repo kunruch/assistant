@@ -51,6 +51,13 @@ const actions = {
     site.to = `/sites/view/${encodeURIComponent(id)}`
     site.favicon = ''
 
+    // more settings stuff
+    site.analytics = {
+      accountId: '',
+      webPropertyId: '',
+      profileId: ''
+    }
+
     return new Promise((resolve, reject) => {
       if (!store.has(`sites.siteMap.${id}`)) {
         // add to our local store and then save a copy to file store

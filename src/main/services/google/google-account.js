@@ -4,6 +4,7 @@ import {BrowserWindow} from 'electron'
 require('dotenv').config()
 
 var plus = google.plus('v1')
+var analytics = google.analytics('v3')
 
 const OAuth2 = google.auth.OAuth2
 
@@ -73,14 +74,14 @@ export default {
   googleAuth (mainWindow, event) {
     let self = this
     if (store.has('auth.tokens')) {
-      self.saveAuthtokens(store.get('auth.tokens'), event)
+      self.laodAuthtokens(event)
     } else {
       authorizeApp(mainWindow).then((code) => {
         oauth2Client.getToken(code, function (err, tokens) {
           // Now tokens contains an access_token and an optional refresh_token. Save them.
           if (!err) {
             store.set('auth.tokens', tokens)
-            self.saveAuthtokens(tokens, event)
+            self.laodAuthtokens(event)
           }
         })
       })
@@ -92,7 +93,14 @@ export default {
     store.delete('user')
     event.sender.send('user-profile-refresh', null)
   },
-  saveAuthtokens (tokens, event) {
+  laodAuthtokens (event) {
+    let tokens = store.get('auth.tokens')
+
+    if (!tokens) {
+      console.error('No Auth tokens are stored')
+      return
+    }
+
     oauth2Client.credentials = tokens
 
     // load user profile after every token update
@@ -102,8 +110,80 @@ export default {
     }, function (err, response) {
       if (!err) {
         store.set('user', response)
-        event.sender.send('user-profile-refresh', response)
+        if (event) {
+          event.sender.send('user-profile-refresh', response)
+        }
+      } else {
+        console.error(err)
       }
     })
+  },
+  findAnalyticsProperties (siteID, event) {
+    let site = store.get(`sites.siteMap.${siteID}`)
+
+    if (site) {
+      analytics.management.accounts.list({
+        auth: oauth2Client
+      }, function (err, response) {
+        // Handles the response from the accounts list method.
+        if (!err && response.items && response.items.length) {
+          // Get analytics properties
+          for (var i = 0; i < response.items.length; i++) {
+            queryProperties(response.items[i].id, site, event)
+          }
+        } else {
+          console.log('No accounts found for this user. ' + err)
+        }
+      })
+    }
   }
+}
+
+function queryProperties (accountID, site, event) {
+  // Get a list of all the properties for the account.
+  analytics.management.webproperties.list({
+    'accountId': accountID
+  }, function (err, response) {
+    let found = false
+    // Handles the response from the accounts list method.
+    if (!err && response.items && response.items.length) {
+      // get account properties
+      for (var i = 0; i < response.items.length; i++) {
+        if (response.items[i].websiteUrl === site.url) {
+          found = true
+          queryProfiles(accountID, response.items[i].id, site, event)
+          break
+        }
+      }
+    }
+
+    if (!found) {
+      console.log('No properties found for site ' + site.url + 'in account ' + accountID)
+    }
+  })
+}
+
+function queryProfiles (accountID, propertyId, site, event) {
+  // Get a list of all Views (Profiles) for the property
+  analytics.management.profiles.list({
+    'accountId': accountID,
+    'webPropertyId': propertyId
+  }, function (err, response) {
+    // Handles the response from the profiles list method.
+    if (!err && response.items && response.items.length) {
+    // Get the first View (Profile) ID.
+      var profileId = response.items[0].id
+      let analytics = {
+        accountId: accountID,
+        webPropertyId: propertyId,
+        profileId: profileId
+      }
+      console.log(JSON.stringify(analytics))
+      if (event) {
+        event.sender.send('site-analytics-properties', analytics)
+      }
+    } else {
+      console.log('No views (profiles) found for property. ' + propertyId)
+    }
+  })
 }

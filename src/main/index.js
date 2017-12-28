@@ -18,7 +18,7 @@ const winURL = process.env.NODE_ENV === 'development'
   ? `http://localhost:9080`
   : `file://${__dirname}/index.html`
 
-function createWindow () {
+function initalizeApp () {
   /**
    * Initial window options
    */
@@ -33,9 +33,12 @@ function createWindow () {
   mainWindow.on('closed', () => {
     mainWindow = null
   })
+
+  // load any sotred auth token
+  googleAccount.laodAuthtokens()
 }
 
-app.on('ready', createWindow)
+app.on('ready', initalizeApp)
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
@@ -45,7 +48,7 @@ app.on('window-all-closed', () => {
 
 app.on('activate', () => {
   if (mainWindow === null) {
-    createWindow()
+    initalizeApp()
   }
 })
 
@@ -67,6 +70,10 @@ ipcMain.on('google-signout', (event, data) => {
 
 ipcMain.on('fetch-favicon', (event, url) => {
   favicon.fetch(event, url)
+})
+
+ipcMain.on('find-analytics-properties', (event, siteID) => {
+  googleAccount.findAnalyticsProperties(siteID, event)
 })
 
 /**
