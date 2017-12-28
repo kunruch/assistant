@@ -104,7 +104,7 @@
 </script>
 
 <style lang="scss">
-  @import "~./../scss/main.scss";
+  @import "~./scss/main.scss";
 
   .user-logged-in {
     cursor: pointer;
