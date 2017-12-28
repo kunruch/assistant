@@ -1,7 +1,12 @@
 import store from './../../store'
 import google from 'googleapis'
 import {BrowserWindow} from 'electron'
+import NodeCache from 'node-cache'
+
 require('dotenv').config()
+
+// cache for 10 mins, don't auto check for deletion
+const analyticsCache = new NodeCache({ stdTTL: 600, checkperiod: 0 })
 
 var plus = google.plus('v1')
 var analytics = google.analytics('v3')
@@ -138,6 +143,13 @@ export default {
     }
   },
   getPageViews (site, startdate, enddate, event) {
+    let data = null
+    let cacheKey = `${site.analytics.profileId}-pageviews-${startdate}-${enddate}`
+    data = analyticsCache.get(cacheKey)
+    if (data) {
+      event.sender.send('site-analytics-pageviews', data)
+      return
+    }
     analytics.data.ga.get({
       auth: oauth2Client,
       'ids': 'ga:' + site.analytics.profileId,
@@ -148,7 +160,7 @@ export default {
       'sort': '-ga:pageviews'
     }, function (err, response) {
       if (!err) {
-        var data = []
+        data = []
         // var formattedJson = JSON.stringify(response, null, 2)
         // console.log(formattedJson)
         // add first item with total page views
@@ -170,6 +182,7 @@ export default {
           }
           data.push(item)
         }
+        analyticsCache.set(cacheKey, data)
         if (event) {
           event.sender.send('site-analytics-pageviews', data)
         }
