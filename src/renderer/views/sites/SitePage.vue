@@ -55,10 +55,14 @@
         }
       })
 
-      // save analytics data if it was updted
+      // save analytics data if it was updated
       this.$electron.ipcRenderer.on('site-analytics-properties', (event, analytics) => {
         this.$store.dispatch('updateProperty', { id: this.model.id, property: 'analytics', value: analytics })
       })
+    },
+    beforeDestroy () {
+      this.$electron.ipcRenderer.removeAllListeners('favicon-url')
+      this.$electron.ipcRenderer.removeAllListeners('site-analytics-properties')
     },
     methods: {
       open (link) {
