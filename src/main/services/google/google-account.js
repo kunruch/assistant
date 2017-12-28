@@ -148,27 +148,30 @@ export default {
       'sort': '-ga:pageviews'
     }, function (err, response) {
       if (!err) {
-        var result = {
-          totalViews: 0,
-          data: []
-        }
+        var data = []
         // var formattedJson = JSON.stringify(response, null, 2)
         // console.log(formattedJson)
-        result.totalViews = response.totalsForAllResults['ga:pageviews']
+        // add first item with total page views
+        var item = {
+          url: '',
+          title: '<strong>Total views<strong>',
+          pageViews: response.totalsForAllResults['ga:pageviews']
+        }
+        data.push(item)
 
         var rowsCount = response.rows ? response.rows.length : 0
 
         for (var i = 0; i < rowsCount; i++) {
           var row = response.rows[i]
-          var item = {
+          item = {
             url: site.url + '' + row[0],
             title: row[1],
             pageViews: row[2]
           }
-          result.data.push(item)
+          data.push(item)
         }
         if (event) {
-          event.sender.send('site-analytics-pageviews', result)
+          event.sender.send('site-analytics-pageviews', data)
         }
       } else {
         // Log any errors.

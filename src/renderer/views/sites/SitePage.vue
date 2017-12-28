@@ -12,9 +12,21 @@
       </p>
     </div>
     <div class="site-overview">
-      <code v-if="model.analytics">
+      <code v-if="false">
         Account: {{ model.analytics.accountId }} webPropertyId: {{ model.analytics.webPropertyId }} profileId: {{ model.analytics.profileId }}
       </code>
+      <div class="grid section">
+        <div class="one-third">
+          <vue-good-table
+            title="Page Views (Today)"
+            perPage="10"
+            :columns="analyticsData.pageViews.columns"
+            :rows="analyticsData.pageViews.todayData"
+            :paginate="true"
+            :lineNumbers="false"
+            styleClass="table table-bordered table-striped condensed data-table"/>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -28,7 +40,24 @@
       return {
         icons: icons,
         analyticsData: {
-          today: {}
+          pageViews: {
+            columns: [
+              {
+                label: 'Title',
+                field: 'title',
+                html: true,
+                filterable: false
+              },
+              {
+                label: 'Views',
+                field: 'pageViews',
+                type: 'number',
+                html: false,
+                filterable: false
+              }
+            ],
+            todayData: []
+          }
         }
       }
     },
@@ -65,8 +94,7 @@
 
       // load analytics data if it was updated
       this.$electron.ipcRenderer.on('site-analytics-pageviews', (event, data) => {
-        this.analyticsData.today = data
-        console.log(data)
+        this.analyticsData.pageViews.todayData = data
       })
     },
     beforeDestroy () {
@@ -109,6 +137,7 @@
           this.$electron.ipcRenderer.send('find-analytics-properties', this.model.id)
         } else {
           // fetch page views for today
+          this.analyticsData.pageViews.todayData = []
           this.$electron.ipcRenderer.send('get-analytics-page-views', this.model, 'today', 'today')
         }
       }
@@ -116,7 +145,7 @@
   }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .site-header {
   display: flex;
 }
@@ -138,4 +167,23 @@
   }
 }
 
+.good-table .responsive {
+  overflow-x: auto!important;
+}
+
+.data-table {
+  font-size: 12px;
+  line-height: 1.25;
+}
+
+.datatable-length {
+  display: none!important;
+}
+
+.table-footer {
+  padding: 0.2rem!important;
+  label, legend, select {
+    margin: 0 !important;
+  }
+}
 </style>
