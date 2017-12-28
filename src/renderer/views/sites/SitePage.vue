@@ -16,10 +16,10 @@
         Account: {{ model.analytics.accountId }} webPropertyId: {{ model.analytics.webPropertyId }} profileId: {{ model.analytics.profileId }}
       </code>
       <div class="grid section">
-        <div class="one-third">
+        <div class="one-half">
           <vue-good-table
-            title="Page Views (Today)"
-            perPage="10"
+            title="Page Views"
+            perPage="20"
             :columns="analyticsData.pageViews.columns"
             :rows="analyticsData.pageViews.todayData"
             :paginate="true"
@@ -174,16 +174,30 @@
 .data-table {
   font-size: 12px;
   line-height: 1.25;
+  margin-top: 0.8rem;
 }
 
 .datatable-length {
   display: none!important;
 }
 
+.table-header {
+  padding: 0 !important;
+
+  .table-title {
+    font-size: 14px !important;
+  }
+}
+
 .table-footer {
-  padding: 0.2rem!important;
+  padding: 0!important;
   label, legend, select {
     margin: 0 !important;
+  }
+
+  .pagination-controls a span,
+  .pagination-controls .info {
+    font-size: 12px!important;
   }
 }
 </style>
